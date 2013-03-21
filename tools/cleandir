@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ $# -gt 0 ];then
+	rm -f $1/*.class $1/*~ $1/*.o $1/*.out $1/*.a
+else
+	rm -f ./*.class ./*~ ./*.o ./*.out ./*.a
+fi
+

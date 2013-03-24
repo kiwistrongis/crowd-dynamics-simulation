@@ -50,6 +50,7 @@ public class Configuration {
 		Plot plot = new Plot();
 		//basic parmeters
 		plot.scale = Double.parseDouble(plot_config.get("scale"));
+		plot.scale_dest = plot.scale;
 		plot.precision = Double.parseDouble(plot_config.get("precision"));
 		//formatting parameters
 		plot.axis_colour = parseColour(plot_config.get("axis_colour"));
@@ -75,6 +76,7 @@ public class Configuration {
 		gui.window_height = Integer.parseInt(gui_config.get("window_height"));
 		gui.background_colour = parseColour(gui_config.get("background_colour"));
 		gui.background_filename = gui_config.get("background_filename");
+		gui.icon_filename = gui_config.get("icon_filename");
 		
 		//finish setup
 		gui.setup();

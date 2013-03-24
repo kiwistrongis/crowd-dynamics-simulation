@@ -2,6 +2,9 @@ package objects;
 public class Pointd extends java.awt.geom.Point2D{
 	public double x;
 	public double y;
+	public Pointd(){
+		this.x = 0;
+		this.y = 0;}
 	public Pointd( double x, double y){
 		this.x = x;
 		this.y = y;}
@@ -12,7 +15,7 @@ public class Pointd extends java.awt.geom.Point2D{
 		return x;}
 	public double getY(){
 		return y;}
-	
+
 	public void add(Pointd p){
 		x+=p.x;
 		y+=p.y;}

@@ -1,9 +1,8 @@
 #globals
 default: all
-clean:
-	tools/cleandir .
-	tools/cleandir assets
-	tools/cleandir objects
+clean: clean-special
+	rm -rf bin/*
+clean-special:
 freshen: clean default
 all: locals assets objects
 
@@ -12,53 +11,79 @@ git-prepare: clean
 	git add -u
 	git add *
 
+#variables
+cp = -cp src:bin:libs/*
+dest = -d bin
+
 #groups
 locals: \
-	Driver.class
+	bin/Driver.class
 assets: \
-	assets/Configuration.class \
-	assets/Gui.class \
-	assets/Plot.class \
-	assets/Simulation.class
+	bin/assets/Configuration.class \
+	bin/assets/Gui.class \
+	bin/assets/Plot.class \
+	bin/assets/Simulation.class
 objects: \
-	objects/Ball.class \
-	objects/Box.class \
-	objects/Line.class \
-	objects/Pointd.class \
+	bin/objects/Ball.class \
+	bin/objects/Box.class \
+	bin/objects/Line.class \
+	bin/objects/Pointd.class
 
-test: Driver.class
-	java Driver
+#special
+test: bin/Driver.class
+	java $(cp) Driver
 
 #locals
-Driver.class: Driver.java \
-		assets
-	javac Driver.java
+bin/Driver.class: src/Driver.java \
+		bin/assets/Configuration.class \
+		bin/assets/Gui.class \
+		bin/assets/Plot.class \
+		bin/assets/Simulation.class \
+		bin/objects/Ball.class \
+		bin/objects/Box.class \
+		bin/objects/Line.class \
+		bin/objects/Pointd.class
+	javac $(cp) $(dest) src/Driver.java
 
 #assets
-assets/Configuration.class: assets/Configuration.java \
-		assets/Gui.class \
-		assets/Simulation.class
-	javac assets/Configuration.java
-assets/Gui.class: assets/Gui.java \
-		assets/Plot.class \
-		assets/Simulation.class
-	javac assets/Gui.java
-assets/Simulation.class: assets/Simulation.java \
-		objects
-	javac assets/Simulation.java
-assets/Plot.class: assets/Plot.java
-	javac assets/Plot.java
+bin/assets/Configuration.class: src/assets/Configuration.java \
+		bin/assets/Gui.class \
+		bin/assets/Plot.class \
+		bin/assets/Simulation.class
+	javac $(cp) $(dest) src/assets/Configuration.java
+
+bin/assets/Gui.class: src/assets/Gui.java \
+		bin/assets/Plot.class \
+		bin/assets/Simulation.class
+	javac $(cp) $(dest) src/assets/Gui.java
+
+bin/assets/Plot.class: src/assets/Plot.java \
+		bin/objects/Ball.class \
+		bin/objects/Box.class \
+		bin/objects/Line.class \
+		bin/objects/Pointd.class
+	javac $(cp) $(dest) src/assets/Plot.java
+
+bin/assets/Simulation.class: src/assets/Simulation.java \
+		bin/objects/Ball.class \
+		bin/objects/Box.class \
+		bin/objects/Line.class \
+		bin/objects/Pointd.class
+	javac $(cp) $(dest) src/assets/Simulation.java
 
 #objects
-objects/Ball.class: objects/Ball.java \
-		objects/Line.class
-	javac objects/Ball.java
-objects/Box.class: objects/Box.java \
-		objects/Line.class
-	javac objects/Box.java
-objects/Line.class: objects/Line.java \
-		objects/Pointd.class
-	javac objects/Line.java
-objects/Pointd.class: objects/Pointd.java
-	javac objects/Pointd.java
+bin/objects/Ball.class: src/objects/Ball.java \
+		bin/objects/Line.class
+	javac $(cp) $(dest) src/objects/Ball.java
+
+bin/objects/Box.class: src/objects/Box.java \
+		bin/objects/Line.class
+	javac $(cp) $(dest) src/objects/Box.java
+
+bin/objects/Line.class: src/objects/Line.java \
+		bin/objects/Pointd.class
+	javac $(cp) $(dest) src/objects/Line.java
+
+bin/objects/Pointd.class: src/objects/Pointd.java
+	javac $(cp) $(dest) src/objects/Pointd.java
 

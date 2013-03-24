@@ -1,2 +1,12 @@
 #!/bin/sh
-java Driver $@
+if [ ! -e bin/Driver.class ]; then
+	echo -en "Driver Class not found - Trying to compile\n"
+	make bin/Driver.class
+	success=$?
+	if [ $success -ne 0 ]; then
+		echo -en "Compile Failed"
+		exit $success
+	fi
+fi
+
+java -cp bin:libs/* Driver $@

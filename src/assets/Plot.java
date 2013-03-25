@@ -12,11 +12,12 @@ public class Plot {
 	Pointd last;
 	Pointd origin;
 
-	int plot_width;
-	int plot_height;
+	int width;
+	int height;
 	double precision;
 	double scale;
 	double scale_dest;
+	double scale_original;
 	Pointd offset;
 	Pointd offset_dest;
 	double lastTime;
@@ -35,23 +36,23 @@ public class Plot {
 	int label_defaultPadding;
 	
 	public Plot() {
-		offset = new Pointd();
 		move_period = 0.1;
 		zoom_period = 0.1;
+		offset = new Pointd();
 		offset_dest = new Pointd();
 		zoom_staticLoc = new Point();
-		this.points = new Vector<Pointd>();
-		this.origin = new Pointd(0.0, 0.0);
-		lastTime = System.currentTimeMillis()/1000.0;}
+		points = new Vector<Pointd>();
+		origin = new Pointd(0.0, 0.0);
+		lastTime = (double) System.currentTimeMillis()/1000;}
 	
 	// drawing functions
 	public void drawAxis(Graphics2D g){
 		Point origin_pp = plotPoint( origin);
 		g.setColor(axis_colour);
 		g.drawLine( origin_pp.x, origin_pp.y, origin_pp.x, 0);
-		g.drawLine( origin_pp.x, origin_pp.y, origin_pp.x, plot_height);
+		g.drawLine( origin_pp.x, origin_pp.y, origin_pp.x, height);
 		g.drawLine( origin_pp.x, origin_pp.y, 0, origin_pp.y);
-		g.drawLine( origin_pp.x, origin_pp.y, plot_width, origin_pp.y);}
+		g.drawLine( origin_pp.x, origin_pp.y, width, origin_pp.y);}
 
 	public void drawBalls( Graphics2D g, Ball[] balls,
 			Vector<Line> walls){
@@ -101,7 +102,7 @@ public class Plot {
 
 	// view functions
 	public void adjustView(){
-		double currTime = System.currentTimeMillis()/1000.0;
+		double currTime = (double) System.currentTimeMillis()/1000;
 		double dtime = currTime - lastTime;
 		double dt = dtime/move_period;
 		offset = offset.mult( 1-dt);
@@ -117,8 +118,8 @@ public class Plot {
 		lastTime = currTime;}
 
 	public void moveViewDest(double dx, double dy){
-		offset_dest.x += dx*0.1*plot_width/scale;
-		offset_dest.y += dy*0.1*plot_width/scale;}
+		offset_dest.x += dx*0.1*width/scale;
+		offset_dest.y += dy*0.1*width/scale;}
 
 	public void zoom( double ratio){
 		zoom( ratio, 0,0);}
@@ -135,8 +136,8 @@ public class Plot {
 		Pointd sum = new Pointd(0.0,0.0);
 		for(Pointd p : points)
 			sum.add(p);
-		offset.x = (int) Math.round( sum.x / points.size());
-		offset.y = (int) Math.round( sum.y / points.size());}
+		offset_dest.x = (int) Math.round( sum.x / points.size());
+		offset_dest.y = (int) Math.round( sum.y / points.size());}
 	
 	public void addTracePoint( Pointd newp){
 		Pointd p = new Pointd( newp.x + 0.0, newp.y + 0.0);
@@ -146,12 +147,12 @@ public class Plot {
 	
 	public Point plotPoint(Pointd p){
 		return new Point(
-			(int) Math.round( plot_width/2.0 - (offset.x + p.x)*scale),
-			(int) Math.round( plot_height/2.0 + (offset.y - p.y)*scale));}
+			(int) Math.round( width/2.0 - (offset.x + p.x)*scale),
+			(int) Math.round( height/2.0 + (offset.y - p.y)*scale));}
 	public Pointd inversePlotPoint(Point p){
 		return new Pointd(
-			( p.x - plot_width/2.0)/scale + offset.x,
-			( plot_height/2.0 - p.y)/scale - offset.y);}
+			( p.x - width/2.0)/scale + offset.x,
+			( height/2.0 - p.y)/scale - offset.y);}
 
 	public Color mixColours( Color d, Color e, double value){
 		double ratio = squisher(value);

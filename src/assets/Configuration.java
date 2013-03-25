@@ -51,6 +51,7 @@ public class Configuration {
 		//basic parmeters
 		plot.scale = Double.parseDouble(plot_config.get("scale"));
 		plot.scale_dest = plot.scale;
+		plot.scale_original = plot.scale;
 		plot.precision = Double.parseDouble(plot_config.get("precision"));
 		//formatting parameters
 		plot.axis_colour = parseColour(plot_config.get("axis_colour"));
@@ -61,7 +62,7 @@ public class Configuration {
 		plot.ball_colour = parseColour(plot_config.get("ball_colour"));
 		plot.box_colour = parseColour(plot_config.get("box_colour"));
 		plot.label_colour = parseColour(plot_config.get("label_colour"));
-		plot.label_font = new Font(plot_config.get("label_font"), Font.BOLD,
+		plot.label_font = new Font(plot_config.get("label_font"), Font.PLAIN,
 			Integer.parseInt(plot_config.get("label_font_size")));
 		plot.label_defaultPadding = Integer.parseInt(plot_config.get("label_defaultPadding"));
 		return plot;}

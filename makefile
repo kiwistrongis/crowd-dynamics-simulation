@@ -20,7 +20,10 @@ locals: \
 	bin/Driver.class
 assets: \
 	bin/assets/Configuration.class \
+	bin/assets/Controller.class \
+	bin/assets/DrawArea.class \
 	bin/assets/Gui.class \
+	bin/assets/Overlay.class \
 	bin/assets/Plot.class \
 	bin/assets/Simulation.class
 objects: \
@@ -36,7 +39,10 @@ test: bin/Driver.class
 #locals
 bin/Driver.class: src/Driver.java \
 		bin/assets/Configuration.class \
+		bin/assets/Controller.class \
+		bin/assets/DrawArea.class \
 		bin/assets/Gui.class \
+		bin/assets/Overlay.class \
 		bin/assets/Plot.class \
 		bin/assets/Simulation.class \
 		bin/objects/Ball.class \
@@ -52,10 +58,27 @@ bin/assets/Configuration.class: src/assets/Configuration.java \
 		bin/assets/Simulation.class
 	javac $(cp) $(dest) src/assets/Configuration.java
 
+bin/assets/Controller.class: src/assets/Controller.java \
+		bin/assets/DrawArea.class \
+		bin/assets/Gui.class \
+		bin/assets/Plot.class \
+		bin/assets/Simulation.class
+	javac $(cp) $(dest) src/assets/Controller.java
+
+bin/assets/DrawArea.class: src/assets/DrawArea.java \
+		bin/assets/Gui.class \
+		bin/assets/Plot.class \
+		bin/assets/Simulation.class
+	javac $(cp) $(dest) src/assets/DrawArea.java
+
 bin/assets/Gui.class: src/assets/Gui.java \
 		bin/assets/Plot.class \
 		bin/assets/Simulation.class
 	javac $(cp) $(dest) src/assets/Gui.java
+
+bin/assets/Overlay.class: src/assets/Overlay.java \
+		bin/assets/Gui.class
+	javac $(cp) $(dest) src/assets/Overlay.java
 
 bin/assets/Plot.class: src/assets/Plot.java \
 		bin/objects/Ball.class \

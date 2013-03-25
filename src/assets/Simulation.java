@@ -146,9 +146,6 @@ public class Simulation extends Observable implements ODE {
 		i++;
 		solver.step();
 		handleCollisions();
-		//to ensure there are no collisions on exit use this?:
-		//while(handleCollisions());
-		if( i % period == 0){
-			setChanged();
-			notifyObservers();}}
+		setChanged();
+		notifyObservers();}
 }

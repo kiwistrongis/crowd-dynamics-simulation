@@ -29,6 +29,8 @@ assets: \
 objects: \
 	bin/objects/Ball.class \
 	bin/objects/Box.class \
+	bin/objects/Crowd.class \
+	bin/objects/Entity.class \
 	bin/objects/Line.class \
 	bin/objects/Pointd.class
 
@@ -47,6 +49,8 @@ bin/Driver.class: src/Driver.java \
 		bin/assets/Simulation.class \
 		bin/objects/Ball.class \
 		bin/objects/Box.class \
+		bin/objects/Crowd.class \
+		bin/objects/Entity.class \
 		bin/objects/Line.class \
 		bin/objects/Pointd.class
 	javac $(cp) $(dest) src/Driver.java
@@ -102,6 +106,14 @@ bin/objects/Ball.class: src/objects/Ball.java \
 bin/objects/Box.class: src/objects/Box.java \
 		bin/objects/Line.class
 	javac $(cp) $(dest) src/objects/Box.java
+
+bin/objects/Crowd.class: src/objects/Crowd.java \
+		bin/objects/Entity.class
+	javac $(cp) $(dest) src/objects/Crowd.java
+
+bin/objects/Entity.class: src/objects/Entity.java \
+		bin/objects/Ball.class
+	javac $(cp) $(dest) src/objects/Entity.java
 
 bin/objects/Line.class: src/objects/Line.java \
 		bin/objects/Pointd.class

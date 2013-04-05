@@ -36,8 +36,8 @@ public class DrawArea extends JPanel {
 
 	public DrawArea( Gui gui){
 		this.gui = gui;
-		plot = gui.plot;
-		sim = gui.sim;
+		this.plot = gui.plot;
+		this.sim = gui.sim;
 
 		setBackground( plot.bg_colour);
 		mouseActive = false;
@@ -50,8 +50,7 @@ public class DrawArea extends JPanel {
 			original_width = bg_original.getWidth();
 			original_height = bg_original.getHeight();			
 			bg_loaded = true;}
-		catch(IOException e){ System.out.println(e);}
-		rescaleBackground();}
+		catch(IOException e){ System.out.println(e);}}
 
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
@@ -65,8 +64,9 @@ public class DrawArea extends JPanel {
 			area_height/2 - background_height/2, null);/**/
 		//plot.drawAxis(g2);
 		plot.adjustView();
-		plot.drawBox(g2, sim.box);
-		plot.drawBalls( g2, sim.balls, sim.box.walls);}
+		for( objects.Box box : sim.boxes)
+			plot.drawBox(g2, box);
+		plot.drawEntities( g2, sim.entities, sim.boxes);}
 		//draw a black circle over the first point found
 		// that is close enough to the mouse
 		/*if (mouseActive){

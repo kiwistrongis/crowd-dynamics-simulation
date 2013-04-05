@@ -18,7 +18,6 @@ public class Gui extends JFrame{
 	public Plot plot;
 	public DrawArea drawArea;
 	public Overlay overlay;
-	public Controller controller;
 	// minor fields
 	public String title;
 	public int window_x;
@@ -31,12 +30,24 @@ public class Gui extends JFrame{
 
 	public Gui(Simulation sim, Plot plot){
 		this.sim = sim;
-		this.plot = plot;}
+		this.plot = plot;
+		//default fields
+		title = "Simulation";
+		window_x = 0;
+		window_y = 0;
+		plot.width = window_width = 1200;
+		plot.height = window_height = 700;
+		background_colour = new Color( 0, 0, 0, 0xff);
+		background_filename = "resources/background.png";
+		icon_filename = "resources/icon.png";}
 	
 	public void setup(){
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		setTitle(title);
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		window_x = ( gd.getDisplayMode().getWidth() - window_width)/2;
+		window_y = ( gd.getDisplayMode().getHeight() - window_height)/2;
 		setBounds( window_x, window_y, window_width, window_height);
 		setBackground( background_colour);
 		BufferedImage icon;
@@ -64,10 +75,8 @@ public class Gui extends JFrame{
 		this.setGlassPane(overlay);
 		overlay.setVisible(true);
 
-		plot.fit(sim.box.points);
+		plot.fit(sim.boxes[0].points);
 		plot.offset = plot.offset_dest;
-
-		controller = new Controller( this, sim);
 
 		this.setFocusable(true);
 		this.requestFocus();

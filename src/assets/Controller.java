@@ -28,9 +28,7 @@ public class Controller
 	public int fps_count;
 	public double drawPeriod;
 
-	public Controller( Gui gui, Simulation sim){
-		this.gui = gui;
-		this.sim = sim;
+	public Controller(){
 
 		mouse = new Point();
 		mouse_old = new Point();
@@ -41,7 +39,11 @@ public class Controller
 		time = (double) System.currentTimeMillis()/1000;
 		drawPeriod = (double) 1/60;
 		second = (int) time;
-		fps_count = 0;
+		fps_count = 0;}
+
+	public void setup( Gui gui, Simulation sim){
+		this.gui = gui;
+		this.sim = sim;
 
 		gui.addKeyListener(this);
 		gui.drawArea.addMouseListener(this);
@@ -50,7 +52,9 @@ public class Controller
 		gui.drawArea.addComponentListener(this);
 		gui.drawArea.mouse = mouse;
 		gui.drawArea.mouseActive = this.mouseActive;
-		gui.sim.addObserver(this);}
+		sim.addObserver(this);
+
+		time = (double) System.currentTimeMillis()/1000;}
 	
 	//redraw requests handling
 	public void update(Observable o, Object arg){
@@ -143,10 +147,7 @@ public class Controller
 				break;
 			// recenter and rezoom
 			case 67://c
-				gui.plot.fit(sim.box.points);
-				gui.plot.scale_dest = gui.plot.scale_original;
-				gui.plot.zoom_staticLoc =
-					new Point( gui.plot.width/2, gui.plot.height/2);
+				gui.plot.fit(sim.boxes[0].points);
 				break;
 			// exit
 			case 27://escape
@@ -172,11 +173,11 @@ public class Controller
 			// zoom
 			case 90:
 			case 33://in
-				gui.plot.zoom( zoom_ratio, mouse);
+				gui.plot.zoom( zoom_ratio);
 				break;
 			case 88:
 			case 34://out
-				gui.plot.zoom( -zoom_ratio, mouse);
+				gui.plot.zoom( -zoom_ratio);
 				break;
 			//help
 			case 112://f1

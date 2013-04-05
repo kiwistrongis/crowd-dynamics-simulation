@@ -15,7 +15,8 @@ public class Overlay extends JComponent {
 	public int hint_padding;
 	public int helpBox_width;
 	public int helpBox_height;
-	Vector<String> help;
+	Vector<String> helpKeys;
+	Vector<String> helpValues;
 
 	public Overlay(Gui gui) {
 		this.gui = gui;
@@ -27,16 +28,16 @@ public class Overlay extends JComponent {
 		hint_padding = 3;
 		helpBox_width = 50;
 		helpBox_height = 50;
-		help = new Vector<String>();
-		help.add("Key:Action");
-		help.add("'a':Move left");
-		help.add("'a':Move left");
-		help.add("'d':Move right");
-		help.add("'w':Move up");
-		help.add("'s':Move down");
-		help.add("'c':Recenter view");
-		help.add("'r':Reload Configuration");
-		help.add("Esc:Exit");}
+		helpKeys = new Vector<String>();
+		helpValues = new Vector<String>();
+		helpKeys.add("Key "); helpValues.add(": Action");
+		helpKeys.add("'a' "); helpValues.add(": Move left");
+		helpKeys.add("'d' "); helpValues.add(": Move right");
+		helpKeys.add("'w' "); helpValues.add(": Move up");
+		helpKeys.add("'s' "); helpValues.add(": Move down");
+		helpKeys.add("'c' "); helpValues.add(": Recenter view");
+		helpKeys.add("'r' "); helpValues.add(": Reload Config");
+		helpKeys.add("Esc "); helpValues.add(": Exit");}
 
 	public void paint(Graphics g) {
 		double currTime = (double) System.currentTimeMillis()/1000;
@@ -54,34 +55,31 @@ public class Overlay extends JComponent {
 		g2.setFont( gui.plot.label_font);
 		FontMetrics fontMetrics = g2.getFontMetrics();
 		g2.setPaint( hint_colour);
-		Point hint_p = new Point( 0, 0);
+		Point hint_p = new Point( hint_padding, hint_padding);
 
 		// draw help hint
 		g2.setComposite( AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, 1 - (float) blend));
-		int hint_width = fontMetrics.stringWidth(hint);
-		int hint_height = fontMetrics.getAscent();
-		g2.drawString( hint,
-			hint_p.x + hint_padding,
-			hint_p.y + hint_padding + hint_height);
+		int help_ascent = fontMetrics.getAscent();
+		hint_p.y += help_ascent;
+
+		g2.drawString( hint, hint_p.x,	hint_p.y);
 
 		// draw help
 		g2.setComposite( AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, (float) blend));
-		for( String s : help){
-			String[] split = s.split(":");
-			if(split.length < 2)
-				break;
-			helpText_left += "" + split[0];
-			helpText_right += " : " + split[1];}
-		int left_width = fontMetrics.stringWidth(helpText_left);
-		int left_height = fontMetrics.getAscent()*(1+help.size());
-		g2.drawString( helpText_left,
-			hint_p.x + hint_padding,
-			hint_p.y + hint_padding + hint_height + left_height);
-		int right_height = fontMetrics.getAscent()*(1+help.size());
-		g2.drawString( helpText_right,
-			hint_p.x + hint_padding + left_width,
-			hint_p.y + hint_padding + hint_height + right_height);
-	}
+
+		int helpKeys_maxWidth = 0;
+		Point help_p = new Point( hint_p.x, hint_p.y);
+		for( String s : helpKeys){
+			int s_width = fontMetrics.stringWidth(s);
+			if( s_width > helpKeys_maxWidth)
+				helpKeys_maxWidth = s_width;
+			help_p.y += help_ascent;
+			g2.drawString( s, help_p.x, help_p.y);}
+
+		help_p = new Point( hint_p.x + helpKeys_maxWidth, hint_p.y);
+		for( String s : helpValues){
+			help_p.y += help_ascent;
+			g2.drawString( s, help_p.x, help_p.y);}}
 }

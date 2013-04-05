@@ -2,9 +2,13 @@ package objects;
 public class Pointd extends java.awt.geom.Point2D{
 	public double x;
 	public double y;
+	
 	public Pointd(){
 		this.x = 0;
 		this.y = 0;}
+	public Pointd( Pointd other){
+		this.x = other.x;
+		this.y = other.y;}
 	public Pointd( double x, double y){
 		this.x = x;
 		this.y = y;}
@@ -38,11 +42,20 @@ public class Pointd extends java.awt.geom.Point2D{
 		return this.distance( 0.0, 0.0);}
 	public Pointd norm(){
 		double m = mag();
-		return new Pointd( x/m, y/m);}
+		if( m != 0)
+			return new Pointd( x/m, y/m);
+		else
+			return new Pointd();}
 	public void normalize(){
 		double m = mag();
-		x /= m;
-		y /= m;}
+		if( m!= 0){
+			x /= m;
+			y /= m;}}
 	public Pointd perp(){
 		return new Pointd( y, -x);}
+
+	public boolean equals( Pointd other){
+		return
+			this.x == other.x &&
+			this.y == other.y;}
 }

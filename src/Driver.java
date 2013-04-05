@@ -10,7 +10,8 @@ import assets.*;
 import objects.*;
 
 public class Driver {
-	private static Object lock = new Object();
+	private static Controller controller;
+	private static Object lock;
 	private static Simulation sim;
 	private static Gui gui;
 	public static void main(String args[]) {
@@ -18,18 +19,26 @@ public class Driver {
 		Configuration config =
 			new Configuration( args.length > 0 ? args[0] : "default.ini");
 			
-		System.out.println("Loading simulation config");
-		sim = config.setupSimulation();
-		if( sim==null){
-			System.out.println("Couldn't load data file.\n Stopping.");
-			return;}
+		System.out.println("Loading Simulation");
+		sim = new Simulation();
+		config.loadSimulation( sim);
+		sim.setup();
 		
-		System.out.println("Loading plot config");
-		Plot plot = config.setupPlot( sim);
+		System.out.println("Loading Plot");
+		Plot plot = new Plot();
+		config.loadPlot( plot);
 		
-		System.out.println("Loading gui config");
-		gui = config.setupGui( sim, plot);
+		System.out.println("Loading Gui");
+		gui = new Gui( sim, plot);
+		config.loadGui( gui);
+		gui.setup();
+		gui.drawArea.rescaleBackground();
 		
+		System.out.println("Loading Controller");
+		controller = new Controller();
+		controller.setup( gui, sim);
+		
+		lock = new Object();
 		Thread stepThread = new Thread(){
 			long time_pre, time_post;
 			public void run(){
@@ -48,6 +57,7 @@ public class Driver {
 						try{ Thread.sleep(1);}
 						catch (InterruptedException e){}}}
 				System.out.println("Stepping stopped");}};
+
 		Thread waitThread = new Thread(){
 			public void run(){
 				synchronized( lock){
@@ -57,6 +67,7 @@ public class Driver {
 						catch (InterruptedException e){}
 					System.out.println("Closing");}}};
 		waitThread.start();
+
 		gui.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				gui.setVisible( false);

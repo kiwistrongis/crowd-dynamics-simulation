@@ -17,4 +17,11 @@ public class Box {
 		walls.add( bc = new Line( b, c));
 		walls.add( cd = new Line( c, d));
 		walls.add( da = new Line( d, a));}
+
+	public boolean equals( Box other){
+		return 
+			this.a.equals(other.a) &&
+			this.b.equals(other.b) &&
+			this.c.equals(other.c) &&
+			this.d.equals(other.d);}
 }

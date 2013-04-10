@@ -31,6 +31,7 @@ objects: \
 	bin/objects/Box.class \
 	bin/objects/Crowd.class \
 	bin/objects/Entity.class \
+	bin/objects/Environment.class \
 	bin/objects/Line.class \
 	bin/objects/Pointd.class
 
@@ -51,6 +52,7 @@ bin/Driver.class: src/Driver.java \
 		bin/objects/Box.class \
 		bin/objects/Crowd.class \
 		bin/objects/Entity.class \
+		bin/objects/Environment.class \
 		bin/objects/Line.class \
 		bin/objects/Pointd.class
 	javac $(cp) $(dest) src/Driver.java
@@ -114,6 +116,11 @@ bin/objects/Crowd.class: src/objects/Crowd.java \
 bin/objects/Entity.class: src/objects/Entity.java \
 		bin/objects/Ball.class
 	javac $(cp) $(dest) src/objects/Entity.java
+
+bin/objects/Environment.class: src/objects/Environment.java \
+		bin/objects/Box.class \
+		bin/objects/Entity.class
+	javac $(cp) $(dest) src/objects/Environment.java
 
 bin/objects/Line.class: src/objects/Line.java \
 		bin/objects/Pointd.class

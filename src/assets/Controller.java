@@ -14,6 +14,7 @@ public class Controller
 		implements MouseListener, MouseMotionListener, Observer,
 			MouseWheelListener, KeyListener, ComponentListener {
 	// major objects
+	Configuration config;
 	Gui gui;
 	Simulation sim;
 	// minor fields
@@ -41,9 +42,10 @@ public class Controller
 		second = (int) time;
 		fps_count = 0;}
 
-	public void setup( Gui gui, Simulation sim){
+	public void setup( Gui gui, Simulation sim, Configuration config){
 		this.gui = gui;
 		this.sim = sim;
+		this.config = config;
 
 		gui.addKeyListener(this);
 		gui.drawArea.addMouseListener(this);
@@ -148,6 +150,12 @@ public class Controller
 			// recenter and rezoom
 			case 67://c
 				gui.plot.fit(sim.boxes[0].points);
+				break;
+			// reload
+			case 82://r
+				config.loadFile();
+				config.loadSimulation(sim);
+				sim.setup();
 				break;
 			// exit
 			case 27://escape

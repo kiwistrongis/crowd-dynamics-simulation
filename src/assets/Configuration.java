@@ -32,7 +32,13 @@ public class Configuration {
 		gui_config = config.get("Gui");}
 
 	public void loadSimulation( Simulation sim){
-		if( plot_config == null) return;}
+		if( sim_config == null) return;
+		String datafile = new String();
+		datafile = sim_config.get("datafile");
+		if( datafile != null)
+			try{ sim.load( new Environment( datafile));}
+			catch( FileNotFoundException e){
+				System.out.println("Datafile not found");}}
 			
 	public void loadPlot( Plot plot){
 		if( plot_config == null) return;

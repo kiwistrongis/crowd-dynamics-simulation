@@ -31,12 +31,12 @@ public class Overlay extends JComponent {
 		helpKeys = new Vector<String>();
 		helpValues = new Vector<String>();
 		helpKeys.add("Key "); helpValues.add(": Action");
-		helpKeys.add("'a' "); helpValues.add(": Move left");
-		helpKeys.add("'d' "); helpValues.add(": Move right");
-		helpKeys.add("'w' "); helpValues.add(": Move up");
-		helpKeys.add("'s' "); helpValues.add(": Move down");
-		helpKeys.add("'c' "); helpValues.add(": Recenter view");
-		helpKeys.add("'r' "); helpValues.add(": Reload Config");
+		helpKeys.add(" a  "); helpValues.add(": Move left");
+		helpKeys.add(" d  "); helpValues.add(": Move right");
+		helpKeys.add(" w  "); helpValues.add(": Move up");
+		helpKeys.add(" s  "); helpValues.add(": Move down");
+		helpKeys.add(" c  "); helpValues.add(": Recenter view");
+		helpKeys.add(" r  "); helpValues.add(": Reload Config");
 		helpKeys.add("Esc "); helpValues.add(": Exit");}
 
 	public void paint(Graphics g) {

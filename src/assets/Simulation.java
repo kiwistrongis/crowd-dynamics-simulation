@@ -17,70 +17,32 @@ public class Simulation extends Observable implements ODE {
 	public boolean paused;
 	public Object pauseLock;
 	//sim parameters
-	public double tolerance;
 	public int i;
 	public int period;
 	public double dt;
-	public int n_entities;
-	public double minRadius;
-	public double maxRadius;
-	public double minMass;
-	public double maxMass;
-	public double maxVelocity;
-	public double room_width;
-	public double room_height;
 	
 	public Simulation (){
 		period = 20;
+		paused = false;
+		pauseLock = new Object();
 		dt = 0.0001;
-		minRadius = 0.1;
-		maxRadius = 0.2;
-		minMass = 1.0;
-		maxMass = 5.0;
-		maxVelocity = 10.0;
-		n_entities = 10;
-		room_width = 5.0;
-		room_height = 5.0;}
+		//do a default environment setup
+		load( new Environment());}
+
+	public void load( Environment env){
+		boxes = env.getBoxes();
+		entities = env.getEntities();}
 
 	public void setup(){
-		state = new double[1 + 4*n_entities];
-		state[0] = 0.0; //initial time
-		
-		//create container box
-		double minPos_x = -room_width/2.0;
-		double maxPos_x = minPos_x + room_width;
-		double minPos_y = -room_height/2.0;
-		double maxPos_y = minPos_y + room_height;
-		boxes = new Box[1];
-		boxes[0] = new Box(
-			minPos_x, maxPos_x,
-			minPos_y, maxPos_y);
-		
-		//generate entities
-		double radius_variance = maxRadius - minRadius;
-		double mass_variance = maxMass - minMass;
-		Random random = new Random();
-		this.entities = new Entity[n_entities];
-		for( int i = 0; i < n_entities; i++){
-			Pointd pos = new Pointd(
-					minPos_x + room_width*random.nextDouble(),
-					minPos_y + room_height*random.nextDouble());
-			Pointd dest = new Pointd(
-					minPos_x + room_width*random.nextDouble(),
-					minPos_y + room_height*random.nextDouble());
-			entities[i] = new Entity(
-				pos, maxVelocity, dest,
-				minMass + mass_variance*random.nextDouble(),
-				minRadius + radius_variance*random.nextDouble());}
-						
+		state = new double[1 + 4*entities.length];
+		//initial time
+		state[0] = 0.0;
+
 		//write entities to state
 		writeEntitysToState();
 		
 		//other setup
 		this.i = 0;
-		this.period = period;
-		this.paused = false;
-		this.pauseLock = new Object();
 		this.solver = new RK4(this);
 		this.solver.initialize(dt);}
 	

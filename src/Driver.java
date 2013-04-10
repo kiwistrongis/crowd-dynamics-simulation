@@ -17,7 +17,9 @@ public class Driver {
 	public static void main(String args[]) {
 		System.out.println("Loading config file");
 		Configuration config =
-			new Configuration( args.length > 0 ? args[0] : "default.ini");
+			new Configuration(
+				args.length > 0 ?
+					args[0] : "default.ini");
 			
 		System.out.println("Loading Simulation");
 		sim = new Simulation();
@@ -36,15 +38,15 @@ public class Driver {
 		
 		System.out.println("Loading Controller");
 		controller = new Controller();
-		controller.setup( gui, sim);
+		controller.setup( gui, sim, config);
 		
 		lock = new Object();
 		Thread stepThread = new Thread(){
 			long time_pre, time_post;
 			public void run(){
-				synchronized(sim.pauseLock){
-					while(!gui.isVisible());
-					while(gui.isVisible()){
+				while(!gui.isVisible());
+				while(gui.isVisible()){
+					synchronized(sim.pauseLock){
 						time_pre = System.nanoTime();
 						if(sim.paused){
 							System.out.println("Simulation Paused");

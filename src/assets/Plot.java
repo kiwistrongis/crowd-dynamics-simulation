@@ -102,11 +102,16 @@ public class Plot {
 			entity_plotPoint.y - entity_r,
 			2 * entity_r, 2 * entity_r);
 		//draw entity path
+		g.setColor( Color.YELLOW);
+		boolean firstConnection = true;
 		Point last = entity_plotPoint;
 		for( Pointd step : entity.path){
 			Point next = plotPoint( step);
 			g.drawLine( last.x, last.y, next.x, next.y);
-			last = next;}
+			last = next;
+			if( firstConnection){
+				firstConnection = false;
+				g.setColor( Color.BLACK);}}
 		//label entity point to bottom-right of point
 		String label = String.format("(%.2f, %.2f)",
 			entity.p.x, entity.p.y);

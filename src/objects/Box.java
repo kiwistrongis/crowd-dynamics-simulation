@@ -25,7 +25,6 @@ public class Box {
 			this.c.equals(other.c) &&
 			this.d.equals(other.d);}
 
-	@Override
 	public String toString(){
 		return String.format(
 			"{\"x\":[%f,%f],\"y\":[%f,%f]}",

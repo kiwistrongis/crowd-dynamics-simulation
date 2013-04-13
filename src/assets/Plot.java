@@ -34,6 +34,8 @@ public class Plot {
 	public Color label_colour;
 	public Font label_font;
 	public int label_defaultPadding;
+	public boolean drawPath;
+	public boolean drawLabel;
 	
 	public Plot() {
 		//variable initialization
@@ -61,6 +63,8 @@ public class Plot {
 		decompress_colour = new Color( 0x00, 0x00, 0x00, 0xff);
 		label_colour = new Color( 0xe0, 0xe0, 0xe0, 0xff);
 
+		drawPath = false;
+		drawLabel = false;
 		label_font = new Font( "Monospace", Font.PLAIN, 11);
 		label_defaultPadding = 0;}
 	
@@ -96,33 +100,39 @@ public class Plot {
 				if( dist < compression )
 					compression = dist;}
 		//draw entity point
+		g.setComposite( AlphaComposite.getInstance(
+			AlphaComposite.SRC_OVER, 1));
 		g.setColor( mixColours( decompress_colour, compress_colour,
 				compression));
 		g.fillOval( entity_plotPoint.x - entity_r,
 			entity_plotPoint.y - entity_r,
 			2 * entity_r, 2 * entity_r);
 		//draw entity path
-		g.setColor( Color.YELLOW);
-		boolean firstConnection = true;
-		Point last = entity_plotPoint;
-		for( Pointd step : entity.path){
-			Point next = plotPoint( step);
-			g.drawLine( last.x, last.y, next.x, next.y);
-			last = next;
-			if( firstConnection){
-				firstConnection = false;
-				g.setColor( Color.BLACK);}}
+		if( drawPath){
+			g.setComposite( AlphaComposite.getInstance(
+				AlphaComposite.SRC_OVER, (float) 0.35));
+			g.setColor( Color.YELLOW);
+			boolean firstConnection = true;
+			Point last = entity_plotPoint;
+			for( Pointd step : entity.path){
+				Point next = plotPoint( step);
+				g.drawLine( last.x, last.y, next.x, next.y);
+				last = next;
+				if( firstConnection){
+					firstConnection = false;
+					g.setColor( Color.BLACK);}}}
 		//label entity point to bottom-right of point
-		String label = String.format("(%.2f, %.2f)",
-			entity.p.x, entity.p.y);
-		FontMetrics fontMetrics = g.getFontMetrics();
-		int label_width = fontMetrics.stringWidth(label);
-		int label_height = fontMetrics.getAscent();
-		int label_padding = (int) Math.round( entity_r / 1.4); //sqrt(2) = 1.4
-		g.setPaint( label_colour);
-		g.drawString( label,
-			entity_plotPoint.x + label_padding,
-			entity_plotPoint.y + label_padding + label_height);}
+		if( drawLabel){
+			String label = String.format("(%.2f, %.2f)",
+				entity.p.x, entity.p.y);
+			FontMetrics fontMetrics = g.getFontMetrics();
+			int label_width = fontMetrics.stringWidth(label);
+			int label_height = fontMetrics.getAscent();
+			int label_padding = (int) Math.round( entity_r / 1.4); //sqrt(2) = 1.4
+			g.setPaint( label_colour);
+			g.drawString( label,
+				entity_plotPoint.x + label_padding,
+				entity_plotPoint.y + label_padding + label_height);}}
 
 	public void drawBox( Graphics2D g, Box box){
 		g.setColor( box_colour);
@@ -203,11 +213,11 @@ public class Plot {
 	
 	public Point plotPoint(Pointd p){
 		return new Point(
-			(int) Math.round( width/2.0 - (offset.x + p.x)*scale),
+			(int) Math.round( width/2.0 + (offset.x + p.x)*scale),
 			(int) Math.round( height/2.0 + (offset.y - p.y)*scale));}
 	public Pointd inversePlotPoint(Point p){
 		return new Pointd(
-			( p.x - width/2.0)/scale + offset.x,
+			offset.x - ( p.x - width/2.0)/scale,
 			( height/2.0 - p.y)/scale - offset.y);}
 
 	public Color mixColours( Color d, Color e, double value){

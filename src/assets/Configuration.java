@@ -47,6 +47,12 @@ public class Configuration {
 		value = plot_config.get("precision");
 		if( value != null)
 			plot.precision = Double.parseDouble(value);
+		value = plot_config.get("drawPath");
+		if( value != null)
+			plot.drawPath = Boolean.parseBoolean(value);
+		value = plot_config.get("drawLabel");
+		if( value != null)
+			plot.drawLabel = Boolean.parseBoolean(value);
 		//formatting parameters
 		value = plot_config.get("axis_colour");
 		if( value != null)

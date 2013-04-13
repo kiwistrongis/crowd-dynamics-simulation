@@ -30,8 +30,18 @@ public class Pointd extends java.awt.geom.Point2D{
 	public double distance(Line line){
 		return this.distanceVector( line).mag();}
 	public Pointd distanceVector( Line line){
-		return this.diff(line.a).proj( 
-			line.a.diff(line.b).perp());}
+		Pointd pa = this.diff(line.a);
+		Pointd l = line.a.diff(line.b);
+		double pa_l = pa.dot( l);
+		/*System.out.printf(
+			"x: %f, y: %f pa_l: %f, l.mag(): %f\n",
+			x, y, pa_l, l.mag());//*/
+		if( pa_l > 0)
+			return pa;
+		else if( pa_l < -l.dot(l))
+			return this.diff(line.b);
+		else
+			return pa.proj( l.perp());}
 	
 	public Pointd proj(Pointd p){
 		Pointd p_norm = p.norm();

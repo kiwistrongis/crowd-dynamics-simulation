@@ -6,4 +6,7 @@ public class Line {
 	public Line( Pointd a, Pointd b){
 		this.a = a;
 		this.b = b;}
+
+	public double length(){
+		return a.distance(b);}
 }

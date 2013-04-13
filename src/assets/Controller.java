@@ -155,6 +155,7 @@ public class Controller
 			case 82://r
 				config.loadFile();
 				config.loadSimulation(sim);
+				config.loadPlot( gui.plot);
 				sim.setup();
 				break;
 			// exit
